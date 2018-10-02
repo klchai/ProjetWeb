@@ -1,10 +1,7 @@
 function changerLeStyle() {
+    var e1 = document.getElementById("change");
     e1.style.background = "#0F0";
 }
 
-let e1 = document.getElementById("monbouton");
-e1.addEventListener("click", changerLeStyle, false);
-
-
-
-   
+var e1 = document.getElementById("change");
+//e1.addEventListener("click", changerLeStyle, false);
