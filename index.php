@@ -25,7 +25,7 @@
               <br>
               <br>
               <!-- Mot de passe -->
-              <input type="text" name="mot" placeholder="mot de passe" required>
+              <input type="password" name="mot" placeholder="mot de passe" required>
               <br>
               <br>
               <button type="submit" class="w3-button w3-light-grey">Se connecter</button>
@@ -38,8 +38,8 @@
 
       <br>
 
-      
-             
+
+        
 
       <div class="panel">
         <h4 id="change"> DEVENEZ MEMBRE DE TEST </h4>
@@ -47,10 +47,10 @@
             <input type="text" name="adresse" placeholder="adresse mail" required>
             <br>
             <br>
-            <input type="text" name="mot" placeholder="mot de passe" required>
+            <input type="password" name="mot" placeholder="mot de passe" required>
             <br>
             <br>
-            <input type="text" name="verifmot" placeholder="verifiez mot de passe" required>
+            <input type="password" name="verifmot" placeholder="verifiez mot de passe" required>
             <br>
             <br>
             <button type="submit" class="w3-button w3-light-grey">Se créer</button>
