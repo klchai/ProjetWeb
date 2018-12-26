@@ -11,14 +11,13 @@ body{
     background-repeat: no-repeat;
     background-position: center;
     font:normal 100% Optima, sans-serif;
-
 }
 
 .title {
     /*background: linear-gradient(to bottom right,#50a3a2,#53e3a6);*/
     background-color:black;
     opacity:0.55;
-    width: 100%;
+    width: 90%;
     text-align: center;
     color:whitesmoke;
     margin: 0% auto;
@@ -29,7 +28,116 @@ body{
     box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
 }
 
-.panel {
+#test{
+  height: 70px;
+  width: 80%;
+  background-color:white;
+  font-size: 20px;
+  cursor: pointer;
+  outline: none;
+  text-align: center;
+  color:black;
+  border-radius: 8px;
+  box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
+}
+
+#trace{
+  height: 70px;
+  width: 80%;
+  background-color:white;
+  font-size: 20px;
+  cursor: pointer;
+  outline: none;
+  text-align: center;
+  color:black;
+  border-radius: 8px;
+  box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
+}
+
+#retour{
+  height: 50px;
+  width: 50%;
+  background-color:white;
+  font-size: 20px;
+  cursor: pointer;
+  outline: none;
+  text-align: center;
+  color:black;
+  border-radius: 8px;
+  box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
+}
+
+#tracebt{
+  height: 50px;
+  width: 50%;
+  background-color:white;
+  font-size: 20px;
+  cursor: pointer;
+  outline: none;
+  text-align: center;
+  color:black;
+  border-radius: 8px;
+  box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
+}
+
+.testbt {
+    text-align:center;
+    margin: 0% auto;
+}
+
+.trace {
+    text-align:center;
+    margin: 0% auto;
+}
+
+.tracebt {
+    text-align:center;
+    margin: 0% auto;
+}
+
+.retour {
+    text-align:center;
+    margin: 0% auto;
+}
+
+.warning {
+    background-color: red;
+    color:white;
+    width: 90%;
+    text-align:center;
+    margin: 0% auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /* border: 1px solid #ddd; */
+    border-radius: 8px;
+    box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
+}
+
+.success {
+    background-color: green;
+    color:white;
+    width: 90%;
+    text-align: center;
+    margin: 0% auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /* border: 1px solid #ddd; */
+    border-radius: 8px;
+    box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
+}
+
+.sdata {
+  background-color: white;
+  width: 90%;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  /* border: 1px solid #ddd; */
+  border-radius: 8px;
+  box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
+}
+
+.motcle {
     background-color: white;
     width: 90%;
     text-align: center;
@@ -41,12 +149,43 @@ body{
     box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
 }
 
-.panel h3{
+.recherche {
+    background-color: white;
+    width: 90%;
     text-align: center;
-    font: bold sans-serif;
+    margin: 0% auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /* border: 1px solid #ddd; */
+    border-radius: 8px;
+    box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
 }
 
-.panel h2,h4,h5,h6{
+.graph {
+    background-color: white;
+    width: 90%;
+    text-align: center;
+    margin: 0% auto;
+    /* padding-top: 20px; */
+    padding-bottom: 20px;
+    /* border: 1px solid #ddd; */
+    border-radius: 8px;
+    box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
+}
+
+.panel {
+    background-color: white;
+    width: 90%;
+    text-align: center;
+    margin: 0% auto;
+    /* padding-top: 20px; */
+    padding-bottom: 20px;
+    /* border: 1px solid #ddd; */
+    border-radius: 8px;
+    box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
+}
+
+.panel h2,h3,h4,h5,h6{
     text-align: center;
     font: normal 100% Optima, sans-serif;
 }

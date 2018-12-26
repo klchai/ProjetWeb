@@ -15,11 +15,11 @@
       </div>
       <br>
 
-      
+
 
       <div class="panel">
           <h4 id="change"> DÉJÀ MEMBRE ? </h4>
-          <form method="post" action="index.php">
+          <form method="post" action="app.php">
               <!-- Adresse Mail -->
               <input type="text" name="adresse" placeholder="username" required>
               <br>
@@ -39,7 +39,45 @@
       <br>
 
 
-        
+        <?php
+        $fichier = "./projet.json";
+        if (isset($_POST['adresse']) && isset($_POST['mot']) && isset($_POST['verifmot'])) {
+          if ($_POST['mot']==$_POST['verifmot']) {
+            $adresse = $_POST['adresse'];
+            $mot = $_POST['mot'];
+
+            $fichier = "./projet.json";
+            $contenu = file_get_contents($fichier);
+            $json_data = json_decode($contenu, true);
+
+
+            $existe = false;
+            foreach ($json_data['usr'] as $u) {
+              if ($adresse == $u['adresse']) {
+                $existe = true;
+              }
+            }
+
+            if (!$existe) {
+              $json_data['usr'][] = Array('adresse' => $adresse, 'mot' => $mot);
+
+              $nouv_json_data = json_encode($json_data);
+              file_put_contents($fichier,$nouv_json_data);
+
+
+              $nouveauF = './data/'.$adresse.'.json';
+              fopen($nouveauF,'w+');
+
+              echo "<div class='success'><p>Votre compte est bien créé.</p></div><br>";
+            } else {
+              echo "<div class='warning'><p>Ce nom d'utilisateur est déjà existe.</p><div><br>";
+            }
+          } else {
+            echo "<div class='warning'><p>Les mots de passe ne sont pas le même.</p></div><br>";
+          }
+        }
+        ?>
+
 
       <div class="panel">
         <h4 id="change"> DEVENEZ MEMBRE DE TEST </h4>
