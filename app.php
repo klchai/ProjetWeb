@@ -88,8 +88,7 @@
       <br>
 
       <div class="graph" style="display:none">
-
-        <canvas id="a_canvas">Not supported</canvas>
+        <canvas id="chart" height="400" width="600">Not supported</canvas>
       </div>
       <br>
 

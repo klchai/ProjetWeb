@@ -252,42 +252,134 @@ function recherche() {
       $("#hhh").append("<li style='list-style-type:none'><button onclick='test1(" + i + ")'>" + listeRechercheMD[i].motcle + " : " + listeRechercheMD[i].date + "</button></li>");
     });
   }
-  // }
-  // listeRechercheMD.forEach(function (r) {
-  //   $(document).ready(function(){
-  //     $("#hhh").append("<li style='list-style-type:none'><button id='select' onclick='test1()'>"+r.motcle+" : "+r.date+"</button></li>");
-  //     // $("#hhh").append("<button name='select' onclick=draw() class='w3-button w3-light-grey'>"+r.motcle+"</button><br><br>");
-  //   });
-  // });
-  // } else {
-  //   $(document).ready(function(){
-  //     $("#hhh").append("<li>Not Found</li>");
-  //   });
-  // }
   position = listeRechercheMD.length;
   document.getElementById("recherche").value = '';
   // listeRechercheMD = [];
 }
 
-var listS = [];
-var listX = [];
-var listY = [];
-var listZ = [];
-var listA = [];
-var listB = [];
-var listG = [];
+var listSX = [];
+var listSY = [];
+var listSZ = [];
+var listSA = [];
+var listSB = [];
+var listSG = [];
 
 function test1(i) {
   console.log(i);
   $('.graph').show();
   listeRechercheMD[i].donnees.forEach(function (r) {
-    listS.push(r.s);
-    listX.push(r.x);
-    listY.push(r.y);
-    listZ.push(r.z);
-    listA.push(r.alpha);
-    listB.push(r.beta);
-    listG.push(r.gamma);
+    listSX.push(r.s,r.x);
+    listSY.push(r.s,r.y);
+    listSZ.push(r.s,r.z);
+    listSA.push(r.s,r.alpha);
+    listSB.push(r.s,r.beta);
+    listSG.push(r.s,r.gamma);
   });
-  draw();
+  console.log(listSX);
+  draw(listSX);
+}
+
+function draw(dataArr){
+  // 变量
+  var canvas, ctx;
+  // 图表属性
+  var cWidth, cHeight, cMargin, cSpace;
+  var originX, originY;
+  // 折线图属性
+  var tobalDots, dotSpace, maxValue;
+  var totalYNumber;
+
+  canvas = document.getElementById("chart");
+  if (canvas && canvas.getContext){
+    ctx = canvas.getContext("2d");
+  }
+  initChart();
+
+  function initChart(){
+    cMargin = 60;
+    cSpace = 80;
+    
+    tobalDots = dataArr.length;
+    dotSpace = parseInt( cWidth/tobalDots );
+    maxValue = 0;
+    for(var i=0; i<dataArr.length; i++){
+      var dotVal = parseInt( dataArr[i][1] );
+      if( dotVal > maxValue ){
+        maxValue = dotVal;
+        }
+      }
+    maxValue += 50;
+    totalYNomber = 10;
+    ctx.translate(0.5,0.5);
+  }
+
+  drawLineLabelMarkers();
+
+  function drawLineLabelMarkers(){
+    ctx.font="24px Arial";
+    ctx.lineWidth = 2;
+    ctx.fillStyle="#566a80";
+    ctx.strokeStyle = "#566a80";
+    // Y axis
+    drawLine(originX, originY, cMargin);
+    // X axis
+    drawLine(originX, originY, originX+cWidth, originY);
+    drawMarkers();
+  }
+
+  function drawLine(x, y, X, Y){
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(X, Y);
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  function drawMarkers(){
+    ctx.strokeStyle = "#E0E0E0";
+    // 绘制 y 轴 及中间横线
+    var oneVal = parseInt(maxValue/totalYNomber);
+    ctx.textAlign = "right";
+    for(var i=0; i<=totalYNomber; i++){
+        var markerVal =  i*oneVal;
+        var xMarker = originX-5;
+        var yMarker = parseInt( cHeight*(1-markerVal/maxValue) ) + cMargin;
+        
+        ctx.fillText(markerVal, xMarker, yMarker+3, cSpace); // 文字
+        if(i>0){
+            drawLine(originX+2, yMarker, originX+cWidth, yMarker);
+        }
+    }
+    // 绘制 x 轴 及中间竖线
+    ctx.textAlign = "center";
+    for(var i=0; i<tobalDots; i++){
+        var markerVal = dataArr[i][0];
+        var xMarker = originX+i*dotSpace;
+        var yMarker = originY+30;
+        ctx.fillText(markerVal, xMarker, yMarker, cSpace); // 文字
+        if(i>0){
+            drawLine(xMarker, originY-2, xMarker, cMargin    );
+        }
+    }
+    // 绘制标题 y
+    ctx.save();
+    ctx.rotate(-Math.PI/2);
+    ctx.fillText("访问量", -canvas.height/2, cSpace-10);
+    ctx.restore();
+    // 绘制标题 x
+    ctx.fillText("月份", originX+cWidth/2, originY+cSpace/2+20);
+};
+
+function drawArc( x, y, X, Y ){
+  ctx.beginPath();
+  ctx.arc( x, y, 3, 0, Math.PI*2 );
+  ctx.fill();
+  ctx.closePath();
+}
+
+canvas.onclick = function(){
+  initChart(); // 图表初始化
+  drawLineLabelMarkers(); // 绘制图表轴、标签和标记
+  drawLineAnimate(); // 绘制折线图的动画
+};
 }
