@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <title>Test of Projet Web</title>
+        <title>Mobile Phone Sensor Application</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <link rel="stylesheet" href="projet.css">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -88,7 +88,12 @@
       <br>
 
       <div class="graph" style="display:none">
-        <canvas id="chart" height="400" width="600">Not supported</canvas>
+        <canvas id="chart"></canvas>
+      </div>
+      <br>
+
+      <div class="graph" style="display:none">
+        <canvas id="trahc"></canvas>
       </div>
       <br>
 

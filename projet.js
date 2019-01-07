@@ -1,5 +1,4 @@
-//  JSON.stringify() ---> xxx encode()
-
+// variables globales
 var e1 = document.getElementById("change1");
 var e2 = document.getElementById("change2");
 
@@ -14,10 +13,10 @@ var liste = [];
 var listeRechercheMD = [];
 var position = 0;
 
+// verifier entrer un mot cle avant demarrer
 function beforeStart() {
   mot = document.getElementById("motcle");
   console.log(mot.value);
-
   if (mot.value == '') {
     alert("mot cle null");
   } else {
@@ -52,15 +51,20 @@ function retour() {
   $('.retour').hide();
   $('#hhh').remove();
   $('.sdata').hide();
+  $('.graph').hide();
+
+  // repositionner
   position = 0;
   listeRechercheMD = [];
 }
 
+// onclick sur le boutton start
 function go() {
   $('.motcle').hide();
   countDown();
 }
 
+// comptage 3 secondes
 function countDown() {
   if (countdown >= 1) {
     e1.innerHTML = countdown;
@@ -72,6 +76,7 @@ function countDown() {
   }
 }
 
+// demarrer les listeners
 function start() {
   s = true;
   timedCount();
@@ -79,34 +84,38 @@ function start() {
   dorient();
 }
 
+// compteur pour enrgister les donnees
+// il met les donnees dans liste tout 0.1 seconde
 function timedCount() {
   c = c + 1;
-  // ecrireGlobale();
   var donnees = [c, x, y, z, alpha, beta, gamma];
   liste.push(donnees);
-  t = setTimeout("timedCount()", 1000);
+  t = setTimeout("timedCount()", 100);
 }
 
+// arreter les listeners
+// appeller la fonction ecrireGlobale pour envoyer les donnees a php
+// initialiser les variables globales
 function stop() {
   ecrireGlobale();
   mot.value = '';
   $('.motcle').show();
   $('.panel').hide();
-  // var e1 = document.getElementById("change1");
   s = false;
   clearTimeout(t);
   e1.innerHTML = "Stop";
-  // var e2 = document.getElementById("change2");
   e2.innerHTML = "Stop";
   countdown = 3;
   liste = [];
   $('.tracebt').show();
 }
 
+// onclick sur boutton tracer
 function tracebt() {
   trace();
 }
 
+// listener DeviceMotionEvent
 function dm() {
   if (window.addEventListener) {
     window.addEventListener("devicemotion", motion, false);
@@ -115,25 +124,21 @@ function dm() {
   }
 }
 
+// changer les variables globales x y z dans tous les mouvements de portable
 function motion(event) {
   if (s) {
     x = event.accelerationIncludingGravity.x.toFixed(0);
     y = event.accelerationIncludingGravity.y.toFixed(0);
     z = event.accelerationIncludingGravity.z.toFixed(0);
-
     var s1 = "Accelerometer: "
       + x + ", "
       + y + ", "
       + z;
-    //console.log(s1);
-
-    // var donneesmotion = [x,y,z];
-    // ecrireJson2(donneesmotion);
-    // var e1 = document.getElementById("change1");
     e1.innerHTML = s1;
   }
 }
 
+// listener DeviceOrientationEvent
 function dorient() {
   if (window.addEventListener) {
     window.addEventListener("deviceorientation", orientation, false);
@@ -142,6 +147,7 @@ function dorient() {
   }
 }
 
+// changer les variables globales alpha beta gamma dans tous les mouvements de portable
 function orientation(event) {
   if (s) {
     alpha = event.alpha.toFixed(0);
@@ -155,18 +161,17 @@ function orientation(event) {
   }
 }
 
+// fonction pour envoyer les donnees de javascript a php
 function ecrireGlobale() {
   $.ajax(
     {
       url: "save.php",
       type: "POST",
-      // data: {mydata:JSON.stringify(donnees)},
       data: {
         mydata: liste,
         motcle: mot.value,
         adresse: adresse
       },
-      // dataType: 'json',
       async: false,
       success: function (msg) {
         console.log("DONE ");
@@ -179,10 +184,12 @@ function ecrireGlobale() {
     });
 }
 
+// ici adresse se trouve dans app.php qui est le nom de fichier .json lie a compte
+// meme nom que nom du compte
 var a = "./data/" + adresse + ".json";
 
+// eviter de avoir plusieur fois un meme resultat
 function isIn(value) {
-  console.log(value);
   for (let i = 0; i < listeRechercheMD.length; i++) {
     if (listeRechercheMD[i].motcle == value.motcle && listeRechercheMD[i].date == value.date) {
       return true;
@@ -191,24 +198,27 @@ function isIn(value) {
   return false;
 }
 
+// requete par mot cle
+// lire le fichier .json et enrgister dans listeRechercheMD
+// eviter ajax async car il faut marcher par ordre
 function recherche_motcle() {
   $.ajax({ url: a, async: false }).done(function (resultat) {
     var motclecherche = document.getElementById("recherche").value;
-    console.log(motclecherche);
     resultat.BD.forEach(function (r) {
       var isin = isIn(r);
       if (!isin && r.motcle == motclecherche) {
         listeRechercheMD.push(r);
       }
     });
-    console.log("recherch fini");
   });
 }
 
+// requete par date
+// lire le fichier .json et enrgister dans listeRechercheMD
+// eviter ajax async car il faut marcher par ordre
 function recherche_date() {
   $.ajax({ url: a, async: false }).done(function (resultat) {
     var date = document.getElementById("recherchedate").value;
-    console.log(date);
     resultat.BD.forEach(function (r) {
       if (!isIn(r) && r.date.substring(0, 10) == date) {
         listeRechercheMD.push(r);
@@ -217,11 +227,13 @@ function recherche_date() {
   });
 }
 
+// requete par date et mot cle
+// lire le fichier .json et enrgister dans listeRechercheMD
+// eviter ajax async car il faut marcher par ordre
 function recherche_motcle_date() {
   $.ajax({ url: a, async: false }).done(function (resultat) {
     var date = document.getElementById("recherchedate").value;
     var motclecherche = document.getElementById("recherche").value;
-    console.log(date);
     resultat.BD.forEach(function (r) {
       if (!isIn(r) && r.date.substring(0, 10) == date && r.motcle == motclecherche) {
         listeRechercheMD.push(r);
@@ -230,6 +242,18 @@ function recherche_motcle_date() {
   });
 }
 
+function cleanCanvas(){
+  var c1 = document.getElementById("chart");
+  var c2 = document.getElementById("trahc");
+  var cxt1 = c1.getContext('2d');
+  var cxt2 = c2.getContext('2d');
+  cxt1.clearRect(0,0,c1.width,c1.height);
+  cxt2.clearRect(0,0,c2.width,c2.height);
+}
+
+// onclick sur le boutton recherche
+// verifier l'entree de recherche, mot cle ou data ou les deux
+// utiliser JQuery pour afficher comme un boutton les resultats trouves
 function recherche() {
   if (document.getElementById("recherche").value == ''
     && document.getElementById("recherchedate").value == '') {
@@ -242,11 +266,9 @@ function recherche() {
   } else {
     recherche_date();
   }
-  // $('.sdata').show();
-  console.log(listeRechercheMD);
-  console.log(listeRechercheMD.length);
   $('.sdata').show();
-  // if (listeRechercheMD.length != 0) {
+
+  // $('.graph').show();
   for (let i = position; i < listeRechercheMD.length; i++) {
     $(document).ready(function () {
       $("#hhh").append("<li style='list-style-type:none'><button onclick='test1(" + i + ")'>" + listeRechercheMD[i].motcle + " : " + listeRechercheMD[i].date + "</button></li>");
@@ -254,7 +276,6 @@ function recherche() {
   }
   position = listeRechercheMD.length;
   document.getElementById("recherche").value = '';
-  // listeRechercheMD = [];
 }
 
 var listSX = [];
@@ -264,122 +285,189 @@ var listSA = [];
 var listSB = [];
 var listSG = [];
 
+// retirer les valeurs dans les differentes listes
+// appeler la fonction draw pour dessiner les courbes
 function test1(i) {
-  console.log(i);
   $('.graph').show();
   listeRechercheMD[i].donnees.forEach(function (r) {
-    listSX.push(r.s,r.x);
-    listSY.push(r.s,r.y);
-    listSZ.push(r.s,r.z);
-    listSA.push(r.s,r.alpha);
-    listSB.push(r.s,r.beta);
-    listSG.push(r.s,r.gamma);
+    listSX.push(r.x);
+    listSY.push(r.y);
+    listSZ.push(r.z);
+    listSA.push(r.alpha);
+    listSB.push(r.beta);
+    listSG.push(r.gamma);
   });
-  console.log(listSX);
-  draw(listSX);
+  // console.log(listSX);
+  // console.log(listSY);
+  // console.log(listSZ);
+  // console.log(listSA);
+  // console.log(listSB);
+  // console.log(listSG);
+
+  // ajuster la taille de Canvas
+  window.addEventListener("resize", resizeCanvas, false);
+  function resizeCanvas() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+	}
+  cleanCanvas();
+  // desinner les courbes
+  draw(listSX,listSY,listSZ,false);
+  draw(listSA,listSB,listSG,true);
+
+  listSX.length=0;
+  listSY.length=0;
+  listSZ.length=0;
+  listSA.length=0;
+  listSB.length=0;
+  listSG.length=0;
 }
 
-function draw(dataArr){
-  // 变量
-  var canvas, ctx;
-  // 图表属性
-  var cWidth, cHeight, cMargin, cSpace;
-  var originX, originY;
-  // 折线图属性
-  var tobalDots, dotSpace, maxValue;
-  var totalYNumber;
+function draw(l1,l2,l3,chart){
 
-  canvas = document.getElementById("chart");
-  if (canvas && canvas.getContext){
-    ctx = canvas.getContext("2d");
+  if (chart) {
+    var cvs = document.getElementById("chart");
+  } else {
+    var cvs = document.getElementById("trahc");
   }
-  initChart();
+  var ctx = cvs.getContext('2d');
 
-  function initChart(){
-    cMargin = 60;
-    cSpace = 80;
-    
-    tobalDots = dataArr.length;
-    dotSpace = parseInt( cWidth/tobalDots );
-    maxValue = 0;
-    for(var i=0; i<dataArr.length; i++){
-      var dotVal = parseInt( dataArr[i][1] );
-      if( dotVal > maxValue ){
-        maxValue = dotVal;
-        }
-      }
-    maxValue += 50;
-    totalYNomber = 10;
-    ctx.translate(0.5,0.5);
+
+  // les distances haut, droit, bas, gauche entre coordonnee et canvas
+  var padding = {
+    top:10,
+    right:10,
+    bottom:20,
+    left:25
   }
-
-  drawLineLabelMarkers();
-
-  function drawLineLabelMarkers(){
-    ctx.font="24px Arial";
-    ctx.lineWidth = 2;
-    ctx.fillStyle="#566a80";
-    ctx.strokeStyle = "#566a80";
-    // Y axis
-    drawLine(originX, originY, cMargin);
-    // X axis
-    drawLine(originX, originY, originX+cWidth, originY);
-    drawMarkers();
+  // width et height de fleche
+  var arrow = {
+    width:6,
+    height:10
+  }
+  // point en haut de repere
+  var vertexTop = {
+    x:padding.left,
+    y:padding.top
+  }
+  // point en bas de repere
+  var vertexBottom = {
+    x:padding.left,
+    y:cvs.height - padding.bottom
+  }
+  // point d'origine
+  var origin = {
+    x:padding.left,
+    y:(cvs.height-padding.bottom-padding.top)/2+padding.top
+  }
+  // point de droit
+  var vertexRight = {
+    x:cvs.width - padding.right,
+    y:cvs.height - padding.bottom
   }
 
-  function drawLine(x, y, X, Y){
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(X, Y);
-    ctx.stroke();
-    ctx.closePath();
-  }
+  // le plus loin de axe x (nombre de donnees)
+  var maxx = l1.length;
+  var listeAbs = [];
+  l1.forEach(function(a){
+    listeAbs.push(Math.abs(a));
+  });
+  l2.forEach(function(a){
+    listeAbs.push(Math.abs(a));
+  });
+  l3.forEach(function(a){
+    listeAbs.push(Math.abs(a));
+  });
+  // le plus loin de axe y (maximum de toutes les donnees)
+  var maxy = Math.max(...listeAbs);
 
-  function drawMarkers(){
-    ctx.strokeStyle = "#E0E0E0";
-    // 绘制 y 轴 及中间横线
-    var oneVal = parseInt(maxValue/totalYNomber);
-    ctx.textAlign = "right";
-    for(var i=0; i<=totalYNomber; i++){
-        var markerVal =  i*oneVal;
-        var xMarker = originX-5;
-        var yMarker = parseInt( cHeight*(1-markerVal/maxValue) ) + cMargin;
-        
-        ctx.fillText(markerVal, xMarker, yMarker+3, cSpace); // 文字
-        if(i>0){
-            drawLine(originX+2, yMarker, originX+cWidth, yMarker);
-        }
-    }
-    // 绘制 x 轴 及中间竖线
-    ctx.textAlign = "center";
-    for(var i=0; i<tobalDots; i++){
-        var markerVal = dataArr[i][0];
-        var xMarker = originX+i*dotSpace;
-        var yMarker = originY+30;
-        ctx.fillText(markerVal, xMarker, yMarker, cSpace); // 文字
-        if(i>0){
-            drawLine(xMarker, originY-2, xMarker, cMargin    );
-        }
-    }
-    // 绘制标题 y
-    ctx.save();
-    ctx.rotate(-Math.PI/2);
-    ctx.fillText("访问量", -canvas.height/2, cSpace-10);
-    ctx.restore();
-    // 绘制标题 x
-    ctx.fillText("月份", originX+cWidth/2, originY+cSpace/2+20);
-};
+  console.log(maxx);
+  console.log(maxy);
 
-function drawArc( x, y, X, Y ){
+  // calculer la taille de graduation pour axe x et axe y
+  var unitex = (cvs.width - padding.left - padding.right)/maxx;
+  var unitey = ((cvs.height - padding.top - padding.bottom)/2)/maxy;
+
+  ctx.lineWidth = 2;
+
+  // dessiner axe x et axe y
   ctx.beginPath();
-  ctx.arc( x, y, 3, 0, Math.PI*2 );
-  ctx.fill();
-  ctx.closePath();
-}
+  ctx.moveTo(vertexTop.x,vertexTop.y);
+  ctx.lineTo(vertexBottom.x, vertexBottom.y);
+  ctx.lineTo(vertexRight.x,vertexRight.y);
+  ctx.fillText('0',0,origin.y);
 
-canvas.onclick = function(){
-  initChart(); // 图表初始化
-  drawLineLabelMarkers(); // 绘制图表轴、标签和标记
-  drawLineAnimate(); // 绘制折线图的动画
-};
+  // dessiner graduction de axe x
+  for (var i=1; i< maxx/10-1 ; i++) {
+      ctx.fillText('|', vertexBottom.x + 10*unitex*i, vertexBottom.y);
+  }
+
+  // dessiner graduction de axe y
+  if (chart) {
+    for (var j=1; j< maxy/50 ; j++) {
+      ctx.fillText(-50*j, 0, origin.y + 50*unitey*j);
+      ctx.fillText('-', origin.x, origin.y + 50*unitey*j);
+      ctx.fillText(50*j, 0, origin.y - 50*unitey*j);
+      ctx.fillText('-', origin.x, origin.y - 50*unitey*j);
+    }
+    ctx.fillText("Gyroscop(rad/s)", 0, cvs.height);
+  } else {
+    for (var j=1; j< maxy/10 ; j++) {
+      ctx.fillText(-10*j, 0, origin.y + 10*unitey*j);
+      ctx.fillText('-', origin.x, origin.y + 10*unitey*j);
+      ctx.fillText(10*j, 0, origin.y - 10*unitey*j);
+      ctx.fillText('-', origin.x, origin.y - 10*unitey*j);
+    }
+    ctx.fillText("Acceleromter(m/s^2)", 0, cvs.height);
+  }
+  ctx.strokeStyle = '#000000';
+  ctx.stroke();
+
+
+  // fleche de axe y
+  ctx.beginPath();
+  ctx.moveTo(vertexTop.x,vertexTop.y);
+  ctx.lineTo(vertexTop.x - arrow.width/2,vertexTop.y + arrow.height);
+  ctx.lineTo(vertexTop.x,vertexTop.y + arrow.height/2);
+  ctx.lineTo(vertexTop.x + arrow.width/2,vertexTop.y + arrow.height);
+  ctx.fill();
+
+  // fleche de axe x
+  ctx.beginPath();
+  ctx.moveTo(vertexRight.x,vertexRight.y);
+  ctx.lineTo(vertexRight.x - arrow.height,vertexRight.y - arrow.width);
+  ctx.lineTo(vertexRight.x - arrow.height/2,vertexRight.y);
+  ctx.lineTo(vertexRight.x - arrow.height,vertexRight.y + arrow.width);
+  ctx.fill();
+
+  // dessiner les courbes
+  var comptepas = 0;
+  ctx.beginPath();
+  ctx.moveTo(origin.x,origin.y);
+  l1.forEach(function(arr){
+    comptepas += 1;
+    ctx.lineTo(origin.x + comptepas*unitex, origin.y - arr*unitey);
+  });
+  ctx.strokeStyle = '#FF0000';
+  ctx.stroke();
+
+  var comptepas = 0;
+  ctx.beginPath();
+  ctx.moveTo(origin.x,origin.y);
+  l2.forEach(function(arr){
+    comptepas += 1;
+    ctx.lineTo(origin.x + comptepas*unitex, origin.y - arr*unitey);
+  });
+  ctx.strokeStyle = '#FFFF00';
+  ctx.stroke();
+
+  var comptepas = 0;
+  ctx.beginPath();
+  ctx.moveTo(origin.x,origin.y);
+  l3.forEach(function(arr){
+    comptepas += 1;
+    ctx.lineTo(origin.x + comptepas*unitex, origin.y - arr*unitey);
+  });
+  ctx.strokeStyle = '#0000FF';
+  ctx.stroke();
 }

@@ -13,6 +13,10 @@ body{
     font:normal 100% Optima, sans-serif;
 }
 
+canvas {
+	display:block;
+}
+
 .title {
     /*background: linear-gradient(to bottom right,#50a3a2,#53e3a6);*/
     background-color:black;
@@ -108,7 +112,7 @@ body{
     margin: 0% auto;
     padding-top: 20px;
     padding-bottom: 20px;
-    /* border: 1px solid #ddd; */
+    border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
 }
@@ -121,30 +125,31 @@ body{
     margin: 0% auto;
     padding-top: 20px;
     padding-bottom: 20px;
-    /* border: 1px solid #ddd; */
+    border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
 }
 
 .sdata {
+  margin:0% auto;
   background-color: white;
   width: 90%;
   text-align: center;
   padding-top: 20px;
   padding-bottom: 20px;
-  /* border: 1px solid #ddd; */
+  border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
 }
 
 .motcle {
     background-color: white;
-    width: 90%;
+    width: 100%;
     text-align: center;
     margin: 0% auto;
     padding-top: 20px;
     padding-bottom: 20px;
-    /* border: 1px solid #ddd; */
+    border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
 }
@@ -156,7 +161,7 @@ body{
     margin: 0% auto;
     padding-top: 20px;
     padding-bottom: 20px;
-    /* border: 1px solid #ddd; */
+    border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
 }
@@ -166,9 +171,9 @@ body{
     width: 90%;
     text-align: center;
     margin: 0% auto;
-    /* padding-top: 20px; */
+    padding-top: 20px;
     padding-bottom: 20px;
-    /* border: 1px solid #ddd; */
+    border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
 }
@@ -178,9 +183,9 @@ body{
     width: 90%;
     text-align: center;
     margin: 0% auto;
-    /* padding-top: 20px; */
+    padding-top: 20px;
     padding-bottom: 20px;
-    /* border: 1px solid #ddd; */
+    border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 1px 1px 30px rgba(80, 76, 76, 0.842);
 }
